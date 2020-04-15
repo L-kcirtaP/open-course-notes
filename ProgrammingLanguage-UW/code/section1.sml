@@ -195,22 +195,3 @@ fun sort_pair_2 (pr: int * int) =
 	if #1 pr < #2 pr
 	then (#1 pr, #2 pr)
 	else (#2 pr, #1 pr)
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

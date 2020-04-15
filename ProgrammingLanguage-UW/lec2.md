@@ -117,4 +117,58 @@
 	- Actually they are the SAME
 	- BIG TRUTH: EVERY FUNCTION TAKES EXACTLY ONE ARGUMENT
 
+### 11. A Little Type Inference
+- Type checker tends to infer the types to be **more general** and reusable
+	- Unexpected Polymorphism: some items in the pattern are not used, i.e. not inferred type -> alpha type
 
+### 12. Polymorphic and Equality Types
+- Equality types
+	- type variables with a second "quote", e.g. `'a list * ''a -> bool`
+	- You can only use the `''a` type which you can use the `=` operator on
+		- `=` operator  does not work on function types, `real`, ...
+
+### 13. Nested Pattern Matchings
+- Style
+	- Nested patterns lead to elegant and concise code
+
+- The Full Definition of Pattern-Matching
+	 - Takes a pattern `p` and a value `v` and decides
+	 	- (1) does it match
+	 	- (2) if so, what variable bindings are introduced
+
+### 14. Exceptions
+- Exception can carry data
+	- e.g. `exception MyException of int * int`
+- Handle Exceptions
+	- `e1 handle ex => e2`
+
+### 15. Recursion
+- The idea of *tail recursion*
+	- Improve the efficiency of recursion
+	- Achieve it by using an accumulator
+- Tail Recursion Optimization
+	- It's unnecessary to keep a stack-frame just so it can get callee's result and *return it without any further evaluation*
+	- Compiler recognizes the *tail calls* and treats them differently (optimizes)
+		- Pop the caller *before* the call, allowing callee to **reuse** the same stack space => as efficient as a loop
+
+- Accumualtors: How to Write Tail Recursive Functions
+	- Create a helper funciton that takes an *accumulator*
+	- Old base case becomes initial accumulator
+	- New base case becomes final accumulator
+
+- Example: function `rev` to reverse a list
+	- Non-tail recursive `rev` time complexity: quadratic, because `@` (append) operation traverse the list every time
+	- Tail recursive `rev`: linear time
+	- In this case, tail version is much better => beware list-append!
+
+- Perspectives of *tail recursion*
+	- Cases where tail recursion is not constant space
+		- obvious example: functions that process trees
+	- Mostly, the natural recursion is the way to go
+		- Clean and concise code is also important!
+	- What makes a tail-call?
+		- "nothing left for caller to do": the result of function is the immediate result for the enclosing function body
+	- Precise Definition
+		- A *tail call* is a function call in *tail function*
+		- Tail position is a position where there is nothing more to do after it
+			- If an expression is not in tail position, then no sub-expressions are
