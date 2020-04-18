@@ -20,7 +20,7 @@
 		- Data Segment
 			- Initialized Data Area, `static const int y = 10;`
 			- Unitialized Data Area, `static inx x;`
-	- Known at **Runtime**
+	- Known at **Runtime**g
 		- Heap
 		- Stack
 	- At the top of address space, set when process starts
@@ -158,7 +158,7 @@ void vulnerable() {
 		- Then read a message
 		- Finally echo back the message
 	- Problem: the length specified may exceed the actual message length => leaked data
-	- Real case: the **Heartbleed bug**
+	- Real-world case: the **Heartbleed bug**
 
 ```c
 int main() {
