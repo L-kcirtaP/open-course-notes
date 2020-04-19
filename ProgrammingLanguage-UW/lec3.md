@@ -48,4 +48,32 @@
 	- Functions are first-class values
 
 ### 7. Lexical Scope
+- First-class functions that can be passed around: in what scope?
+	- *Where the function was defined* (not where it was called)
+	- This semantics is called **lexical scope**
 
+- The Semantics of Functions
+	- A function value has two parts:
+		- The **code**
+		- The **environment** that was current when the function was *defined*
+	- The pair composed of these two parts is called **function closure**
+	- A function body is evaluated in the environment where the function was defined, and a *function call* triggers the evaluation
+
+- Lexical Scope for Higher-Order Functions
+
+- Lexical Scope vs. Dynamic Scope
+	- Why Lexical?
+		- 1. The function meaning does not depend on variable names used
+		- 2. function should be type-checked and reasoned when defined
+		- 3. Closure can easily store the data
+	- Sometimes dynamic scope is more useful, e.g. exception handling
+
+### 8. Closures and Recomputation
+- A function body is evaluated *every time* the function is called
+	- We can avoid repeating computaions by using closures
+
+### 9. Fold Function and More Closures
+- Synonym for *Reduce*
+- Iterators Made Better
+	- Lexical scope and closures make `map`, `filter` and `fold` very powerful for iterators
+	- Function passed in can use any "private" data in its environment, and the iterator is *igonorant* to the data
