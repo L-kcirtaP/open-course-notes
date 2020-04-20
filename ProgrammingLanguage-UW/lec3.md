@@ -77,3 +77,59 @@
 - Iterators Made Better
 	- Lexical scope and closures make `map`, `filter` and `fold` very powerful for iterators
 	- Function passed in can use any "private" data in its environment, and the iterator is *igonorant* to the data
+
+### 10. Combining Functions
+- Another Idiom of Closure
+	- Function composition: a very common idea in mathematics
+		- `f(x)=g(h(x))`
+	- In mathematics, function composition is *right to left*
+		- In ML, we use `o` infix operator for function composition
+	- By using pipeline operator `!>`, we can combine functions from *left to right* (a reverse manner of `o`)
+
+### 11. Currying
+- Also A Closure Idiom
+	- Previously, our functions encoded *n* arguments via one *n*-tuple
+	- Another way is to take one argument and *return a function* that takes another argument, and so on
+
+- Partial Application
+	- *Too Few Arguments*
+		- If caller provides *too few* arguments, we get back a closure "waiting for the remaining arguments", called partial application
+		- Very useful and elegant way of defining function
+	- Value Restriction
+		- Warining about "type vars not generalized", and the function will not work
+		- Need to specify the function type
+
+### 12. Currying Wrapup
+- Why Currying Wrapup
+	- If you want to curry a tupled function
+		- See `curry`b
+	- If the function arguments are in different order from the desired partial application
+		- See `other_curry`
+
+### 13. Mutable References
+- Mutable data structures are okay in some cases
+	 - ML allows mutable with a seperate construct: *reference*
+- References
+	- Type: `t ref` where `t` is a type
+	- Expressions
+		- `ref e` to create a reference with initial content `e`
+		- `e1 := e2` to update content
+		- `!e` to retrieve content
+	- A variable bound to a reference is still immutable, it will always refer to the same reference
+		- but the contents can be changed via `:=`
+
+### 14. Closure Idiom - Callbacks
+- A very common idiom nowadays
+- Library takes functions to apply later when an *event* occurs
+	- Different callbacks may need different types of private data when accepting multiple callbacks
+- Mutable State
+	- Useful in callback idiom
+	- Library
+		- public library interface provides a function for registering new callbacks
+	- When an event occurs, the corresponding callbacks will be searched in the *reference of callback list* and applied
+		- In the code example, `cbs` is the mutable reference, `onKeyEvent` provides with an interface for registering a callback
+
+### 15. Standard Library Documentation
+### 16. Abstract Data Types with Closures
+- Closure can implement *abstract data types*
+	- Similar to *objects*

@@ -139,3 +139,128 @@ fun noOfIntInRangeAgain(xs,lo,hi) =
 	in
 		foo((fn x => if x >= lo andalso x <= hi then 1 else 0), xs)
 	end
+
+(* ('b -> 'c) * ('a -> 'b) -> ('a -> 'c) *)
+fun compose(f, g) = fn x => f(g x);
+
+fun sqrt_of_abs i = Math.sqrt (Real.fromInt (abs i));
+(* combine function *)
+fun sqrt_of_abs_1 i = (Math.sqrt o Real.fromInt o abs) i;
+val sqrt_of_abs_2 = Math.sqrt o Real.fromInt o abs;
+
+(* !> infix operator *)
+infix !>;
+fun x !> f = f x;
+fun sqrt_of_abs_3 i = i !> abs !> Real.fromInt !> Math.sqrt;
+
+(* ('a -> 'b option) * ('a -> 'b) -> 'a -> 'b *)
+fun backup (f,g) = fn x => case f of 
+							NONE => g x
+						|	SOME y => y;
+
+(* Currying *)
+fun sorted3_tupled (x, y, z) = z >= y andalso y >= x;
+val sorted = sorted3_tupled(7, 9, 11);
+
+val sorted3 = fn x => fn y => fn z => z >= y andalso y >= x;
+val sorted = ((sorted3 7) 9) 11;
+val sorted = sorted3 7 9 11;		(* a syntactic sugar *)
+(* syntactic sugar for currying *)
+fun sorted3_nicer x y z = z >= y andalso y >= x;
+(* curried fold function *)
+fun fold_curried f acc xs =
+	case xs of 
+		[] => acc
+	|	x::xs' => fold_curried f (f(acc,x)) xs';
+
+(* partial application *)
+val is_nonnegative = sorted3 0 0;				(* check if a number is non-negative *)
+val sum = fold_curried (fn (x,y) => x+y) 0;		(* sum an integer list *)
+
+(* a very elegant function using partial application *)
+fun range i j = if i > j then [] else i :: range (i+1) j;
+val countup = range 1;							(* get back a closure *)
+countup 10;
+
+fun exists predicate xs =
+	case xs of
+		[] => false
+	|	x::xs' => predicate x orelse exists predicate xs'
+
+val thereIsSeven = exists (fn x => x=7);
+thereIsSeven [1, 3, 5, 9];						(* false *)
+
+(* the built-in map function is curried *)
+val incrementAll = List.map (fn x => x+1);
+(* so as foldl, List.filter, etc. *)
+val removeZeros = List.filter (fn x => x <> 0);
+
+(* value restriction *)
+val pariWithOne = List.map (fn x => (x,1));		(* this will raise a warning *)
+val pariWithOne : string list -> (string * int) list = List.map (fn x => (x, 1));
+
+(* currying wrapup *)
+fun curry f = fn x => fn y => f(x,y);
+fun uncurry f(x,y) = f x y;
+fun other_curry f x y = f y x;
+
+fun range_uncurried (i,j) = if i > j then [] else i::range_uncurried(i+1,j);
+val countup = curry range_uncurried 1;
+val countfrom = other_curry (curry range_uncurried) 10;
+countfrom 3;
+
+(* mutable reference *)
+val x = ref 42;
+val y = ref 42;
+val z = x;
+x := 43;
+(!y) + (!z);
+
+(* callback *)
+(* public library interface: a function for registering new callbacks *)
+val cbs : (int -> unit) list ref = ref [];
+fun onKeyEvent f = cbs := f::(!cbs);
+
+fun onEvent i =
+	let fun loop fs =
+		case fs of 
+			[] => ()
+		|	f::fs' => (f i; loop fs')
+	in loop (!cbs) end;
+
+(* for client *)
+val timesPressed = ref 0;
+val _ = onKeyEvent (fn _ => timesPressed := (!timesPressed) + 1);
+
+fun printIfPressed i =
+	onKeyEvent (fn j => if i=j
+						then print ("you pressed " ^ Int.toString i ^ "\n")
+						else ());
+
+val _ = printIfPressed 1;
+val _ = printIfPressed 2;
+val _ = printIfPressed 3;
+cbs;							(* ref [fn,fn,fn, fn] : (int -> unit) list ref *)
+
+(* abstract data type *)
+datatype set = s of { insert : int -> set,
+					  member : int -> bool,
+					  size : unit -> int }
+(*
+fun use_sets () =
+	let val S s1 = empty_set
+		val S s2 = (#insert s1) 34
+		val S s3 = (#insert s2) 34
+		val S s4 = #insert s3 19
+	in
+		if (#member s4) 42
+		then 99
+		else if (#member s4) 19
+		then 17 + (#size s3) ()
+		else ()
+	end;
+*)
+(*
+val empty_set = 
+	blahblahblah
+*)
