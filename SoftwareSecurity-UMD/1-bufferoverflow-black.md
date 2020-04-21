@@ -1,4 +1,4 @@
-# Software Security - Lecture 1
+# Software Security
 
 - An Opening
 	- Undesired Behaviors
@@ -165,11 +165,11 @@ int main() {
 	char buf[100], *p;
 	int i, len;
 	while (1) {
-		p = fget(buf, sizeof(buf), stdin);
+		p = fgets(buf, sizeof(buf), stdin);
 		if (p == NULL) return 0;
 		len = atoi(p);
 
-		p = fget(buf, sizeof(buf), stdin);
+		p = fgets(buf, sizeof(buf), stdin);
 		if (p == NULL) return 0;
 
 		for (i = 0; i < len; i++) {
