@@ -72,4 +72,43 @@
 		- Make type abstract
 
 ### 5. Signature Matching
+- The type-check for the mudule given a signature
+	- A module `structure Foo :> BAR` is allowed if:
+		- Every non-abstract type in `BAR` is provided in `Foo` as specified
+		- Every abstract type in `BAR` is provided in `Foo` in some way, e.g. a datatype binding or a type synonym
+		- Every val-binding in `BAR` is provided in `Foo`
+		- Every exception in `BAR` is provided in `Foo`
+		- `Foo` can have more bindings than `BAR`
 
+### 6. An Equivalent Structure
+- Key purpose of **abstraction**: allow *different implementations* to be *equivalent*
+	- e.g. modules can have signatures `RATIONAL_A`, `RATIONAL_B`, `RATIONAL_C`, but only equivalent under `RATIONAL_B` and `RATIONAL_C`
+		- In the code example, modules `structure Rational1` and `structure Rational2` are equivalent under `RATIONAL_B` and `RATIONAL_C`
+	- By exposing *less* of the module, it is more likely one module implementation can be replaced by another because under a more restrictive signature, more implementation details are hidden, thus disallowing clients from exploiting the differences between the two modules.
+
+
+### 7. Another Equivalent Structure
+- Given a signature with an abstraction type, a *different structure* can have that signature but implement the abstract type differently 
+	- Such structures might and might not be equivalent
+
+- Different Modules Define Different Types
+	- Module with the *same* signatures still define *different* types
+
+### 8. Equivalent Functions
+- Two functions are equivalent if they have the same **observable behavior**
+	- Produce equivalent results
+	- Have the same (non-)termination behavior
+	- Mutate memory in the same way
+	- Do the same input/output
+	- Raise the same exceptions
+	- etc.
+
+### 9. Standard Equivalences
+- Use or not use **syntactic sugar** is always equivalent
+- Use or not use **helper function** is always equivalent
+- Unnecessary function wrapping
+
+- There are different definitions of equivalence for different jobs
+	- PL Equivalence: given same inputs, same outputs and effects
+	- Asymptotic Equivalence: ignore constant factors
+	- System Equivalence: account for constant overheads and performance tune
