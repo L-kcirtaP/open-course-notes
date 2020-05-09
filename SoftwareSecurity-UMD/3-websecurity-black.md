@@ -23,3 +23,6 @@
 		- Data
 
 ### 2. SQL Injection
+- The issue in some SQL query
+	- e.g. PHP: `$result = mysql_query("select * from Users where (name='$user' and password='$pass');")`
+	- The string combines the **code** and the **data**

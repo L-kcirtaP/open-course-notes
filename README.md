@@ -14,7 +14,9 @@ Some notes I take regarding several online open courses in Computer Science.
 
 ### Resources
 
-[Programming Languages | Coursera](https://www.coursera.org/learn/programming-languages/home/welcome)
+[Programming Languages, Part A| Coursera](https://www.coursera.org/learn/programming-languages/home/welcome)
+
+[Programming Languages, Part B| Coursera](https://www.coursera.org/learn/programming-languages-part-b/home/welcome)
 
 [Software Security | Coursera](https://www.coursera.org/learn/software-security#syllabus)
 
